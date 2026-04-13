@@ -1,0 +1,15 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//usr/local/bin/**)",
+      "Read(//opt/homebrew/bin/**)",
+      "Bash(export PATH=\"/usr/local/bin:/opt/homebrew/bin:/opt/homebrew/sbin:$PATH:/usr/bin:/bin\")",
+      "Bash(npm --version)",
+      "Read(//Users/chloecheng/.nvm/**)",
+      "Read(//Users/chloecheng/.volta/**)",
+      "Bash(python3 -c \"import requests, bs4; print\\('deps ok'\\)\")",
+      "Bash(python3:*)",
+      "Bash(git -C /Users/chloecheng/PycharmProjects/daily-bird status)"
+    ]
+  }
+}
