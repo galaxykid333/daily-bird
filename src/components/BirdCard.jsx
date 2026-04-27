@@ -1,4 +1,5 @@
 import { useWikiSummary } from '../hooks/useWikiSummary'
+import ebirdMap from '../data/ebird.json'
 
 const PLACEHOLDER = (
   <div className="w-full h-48 bg-stone-100 flex items-center justify-center rounded-t-2xl">
@@ -63,14 +64,26 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
 
         {/* Actions */}
         <div className="flex items-center justify-between pt-2 border-t border-stone-50">
-          <a
-            href={data?.content_urls?.desktop?.page ?? `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/ /g, '_'))}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-xs font-medium text-emerald-700 hover:text-emerald-900 hover:underline transition-colors"
-          >
-            Read on Wikipedia →
-          </a>
+          <div className="flex items-center gap-2">
+            <a
+              href={data?.content_urls?.desktop?.page ?? `https://en.wikipedia.org/wiki/${encodeURIComponent(title.replace(/ /g, '_'))}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-xs font-medium text-emerald-700 hover:text-emerald-900 hover:underline transition-colors"
+            >
+              Wikipedia →
+            </a>
+            {ebirdMap[title] && (
+              <a
+                href={`https://ebird.org/species/${ebirdMap[title]}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-medium text-sky-600 hover:text-sky-800 hover:underline transition-colors"
+              >
+                eBird →
+              </a>
+            )}
+          </div>
           <button
             onClick={() => onToggleSave(title)}
             aria-label={isSaved ? 'Remove from saved' : 'Save'}
