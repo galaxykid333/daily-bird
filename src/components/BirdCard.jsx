@@ -90,13 +90,13 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
     )
   }
 
-  // ── Species card — fixed 350px height, 40% text / 60% images ────────────────
+  // ── Species card — stacked on mobile, horizontal strip on desktop ────────────
   return (
-    <article className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden transition-shadow hover:shadow-md h-[350px]">
-      <div className="flex h-full">
+    <article className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden transition-shadow hover:shadow-md sm:h-[350px]">
+      <div className="flex flex-col sm:flex-row h-full">
 
-        {/* Text column — 40% width */}
-        <div className="flex flex-col w-[40%] p-5 gap-2 min-w-0 border-r border-stone-100">
+        {/* Text column — full width on mobile, 40% on desktop */}
+        <div className="flex flex-col w-full sm:w-[40%] p-5 gap-2 min-w-0 border-b sm:border-b-0 sm:border-r border-stone-100">
 
           <div className="flex items-baseline gap-2 flex-wrap">
             <h2 className="font-serif text-lg font-semibold text-stone-800 leading-snug">
@@ -158,8 +158,8 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
           </div>
         </div>
 
-        {/* Image panel — 60% width, two equal cells side by side */}
-        <div className="flex w-[60%] h-full">
+        {/* Image panel — full width / 200px tall on mobile, 60% width / full height on desktop */}
+        <div className="flex w-full h-[200px] sm:w-[60%] sm:h-full">
 
           {/* Bird photo — fills cell, cropped to fit (object-cover) */}
           <div className="w-1/2 h-full overflow-hidden bg-stone-100 border-r border-stone-100">
