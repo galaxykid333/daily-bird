@@ -158,26 +158,26 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
           </div>
         </div>
 
-        {/* Image gallery: bird photo + range map, always side by side, fills card height */}
-        <div className="flex flex-row self-stretch w-full sm:w-52 shrink-0 border-t sm:border-t-0 sm:border-l border-stone-100">
+        {/* Image gallery: equal width to text column, images fill all space side by side */}
+        <div className="flex flex-row self-stretch flex-1 border-t sm:border-t-0 sm:border-l border-stone-100">
 
-          {/* Bird photo */}
-          <div className="flex-1 min-h-[120px] sm:min-h-0 overflow-hidden bg-stone-100 flex items-center justify-center border-r border-stone-100">
+          {/* Bird photo — object-contain so nothing is cropped */}
+          <div className="flex-1 min-h-[140px] sm:min-h-0 overflow-hidden bg-stone-100 flex items-center justify-center border-r border-stone-100">
             {loading ? (
               <div className="w-full h-full animate-pulse bg-stone-100" />
             ) : data?.thumbnail?.source ? (
               <img
                 src={data.thumbnail.source}
                 alt={title}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
               />
             ) : (
               <span className="text-4xl select-none opacity-30">🐦</span>
             )}
           </div>
 
-          {/* Range map */}
-          <div className="flex-1 min-h-[120px] sm:min-h-0">
+          {/* Range map — same flex-1 cell as the photo */}
+          <div className="flex-1 min-h-[140px] sm:min-h-0">
             <RangeMapImage rangeMap={rangeMap} title={title} />
           </div>
 

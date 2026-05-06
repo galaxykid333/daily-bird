@@ -75,6 +75,8 @@ function buildSvg(countries) {
   let svg = worldMapRaw
   if (styleTag) svg = svg.replace('</svg>', `${styleTag}</svg>`)
   if (viewBox)  svg = svg.replace(/viewBox="[^"]*"/, `viewBox="${viewBox}"`)
+  // Make the SVG element itself fill its container
+  svg = svg.replace('<svg ', '<svg width="100%" height="100%" ')
 
   return svg
 }
@@ -89,6 +91,7 @@ export function RangeMapImage({ rangeMap, title }) {
     [type, countries],
   )
 
+  // The parent cell is flex-1 so this div must fill it completely in both axes
   const base = 'w-full h-full overflow-hidden flex items-center justify-center bg-stone-100'
 
   // --- Wikipedia range map ---
