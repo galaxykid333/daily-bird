@@ -14,6 +14,10 @@ import { join, dirname } from 'path'
 import { fileURLToPath } from 'url'
 import { feature } from 'topojson-client'
 
+// Also outputs: src/data/country-bboxes.json
+// Format: { "US": [minLon, minLat, maxLon, maxLat], ... }
+// Countries that straddle the antimeridian get null (handled gracefully in frontend)
+
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const ROOT = join(__dirname, '..')
 
@@ -106,6 +110,39 @@ function geometryToD(geometry) {
   return ''
 }
 
+/** Collect all lon/lat coordinate pairs from a geometry. */
+function collectCoords(geometry) {
+  const { type, coordinates } = geometry
+  const rings = type === 'Polygon'
+    ? coordinates
+    : type === 'MultiPolygon'
+      ? coordinates.flatMap(p => p)
+      : []
+  return rings.flatMap(ring => ring)
+}
+
+/** Return [minLon, minLat, maxLon, maxLat] or null for antimeridian-straddling features. */
+function geoBbox(geometry) {
+  const coords = collectCoords(geometry)
+  if (!coords.length) return null
+  let minLon = Infinity, minLat = Infinity, maxLon = -Infinity, maxLat = -Infinity
+  for (const [lon, lat] of coords) {
+    if (lon < minLon) minLon = lon
+    if (lon > maxLon) maxLon = lon
+    if (lat < minLat) minLat = lat
+    if (lat > maxLat) maxLat = lat
+  }
+  // Countries whose longitude span > 180° likely straddle the antimeridian.
+  // Mark as null — the frontend will show the full map for these.
+  if (maxLon - minLon > 180) return null
+  return [
+    parseFloat(minLon.toFixed(2)),
+    parseFloat(minLat.toFixed(2)),
+    parseFloat(maxLon.toFixed(2)),
+    parseFloat(maxLat.toFixed(2)),
+  ]
+}
+
 // ---------------------------------------------------------------------------
 // Load world-atlas and generate SVG
 // ---------------------------------------------------------------------------
@@ -114,20 +151,20 @@ const topo = JSON.parse(readFileSync(topoPath, 'utf8'))
 const { features } = feature(topo, topo.objects.countries)
 
 const paths = []
+const bboxes = {}   // iso2 -> [minLon, minLat, maxLon, maxLat] | null
 let skipped = 0
 
 for (const f of features) {
   const numId = parseInt(f.id, 10)
   const iso2 = NUM_TO_A2[numId]
   if (!iso2) {
-    // Uncomment to debug unmapped codes:
-    // console.warn(`No alpha-2 for numeric id ${f.id} (${f.properties?.name})`)
     skipped++
     continue
   }
   const d = geometryToD(f.geometry)
   if (!d) { skipped++; continue }
   paths.push(`  <path id="${iso2}" d="${d}"/>`)
+  bboxes[iso2] = geoBbox(f.geometry)
 }
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg"
@@ -139,6 +176,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg"
       stroke: #ffffff;
       stroke-width: 0.5;
       stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
     }
     path.highlighted {
       fill: #6b9e78;
@@ -151,6 +189,13 @@ const outPath = join(ROOT, 'src', 'assets', 'world-map.svg')
 mkdirSync(dirname(outPath), { recursive: true })
 writeFileSync(outPath, svg, 'utf8')
 
+// Also write the bounding-box lookup used by the frontend zoom logic
+const bboxPath = join(ROOT, 'src', 'data', 'country-bboxes.json')
+writeFileSync(bboxPath, JSON.stringify(bboxes, null, 2), 'utf8')
+
 const kb = Math.round(svg.length / 1024)
+const nullCount = Object.values(bboxes).filter(v => v === null).length
 console.log(`Generated ${paths.length} country paths, skipped ${skipped}`)
-console.log(`Written to: ${outPath}  (${kb} KB)`)
+console.log(`Bboxes: ${Object.keys(bboxes).length} countries, ${nullCount} antimeridian-straddling (stored as null)`)
+console.log(`SVG written to:   ${outPath}  (${kb} KB)`)
+console.log(`Bboxes written to: ${bboxPath}`)

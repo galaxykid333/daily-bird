@@ -158,11 +158,11 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
           </div>
         </div>
 
-        {/* Image gallery: bird photo + range map side by side */}
-        <div className="flex flex-row sm:flex-col w-full sm:w-48 shrink-0 border-t sm:border-t-0 sm:border-l border-stone-100">
+        {/* Image gallery: bird photo + range map, always side by side, fills card height */}
+        <div className="flex flex-row self-stretch w-full sm:w-52 shrink-0 border-t sm:border-t-0 sm:border-l border-stone-100">
 
           {/* Bird photo */}
-          <div className="w-1/2 sm:w-full h-28 sm:h-32 overflow-hidden bg-stone-100 flex items-center justify-center border-r sm:border-r-0 sm:border-b border-stone-100">
+          <div className="flex-1 min-h-[120px] sm:min-h-0 overflow-hidden bg-stone-100 flex items-center justify-center border-r border-stone-100">
             {loading ? (
               <div className="w-full h-full animate-pulse bg-stone-100" />
             ) : data?.thumbnail?.source ? (
@@ -177,7 +177,7 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
           </div>
 
           {/* Range map */}
-          <div className="w-1/2 sm:w-full h-28 sm:h-32">
+          <div className="flex-1 min-h-[120px] sm:min-h-0">
             <RangeMapImage rangeMap={rangeMap} title={title} />
           </div>
 

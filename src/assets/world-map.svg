@@ -7,6 +7,7 @@
       stroke: #ffffff;
       stroke-width: 0.5;
       stroke-linejoin: round;
+      vector-effect: non-scaling-stroke;
     }
     path.highlighted {
       fill: #6b9e78;
