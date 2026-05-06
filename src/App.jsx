@@ -136,7 +136,7 @@ export default function App() {
 
 function CardGrid({ cards, isSaved, onToggleSave }) {
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+    <div className="flex flex-col gap-4">
       {cards.map(({ title, type }) => (
         <BirdCard
           key={title}
