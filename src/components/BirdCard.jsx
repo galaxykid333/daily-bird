@@ -90,13 +90,13 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
     )
   }
 
-  // ── Species card — horizontal strip with image + range map gallery ─────────
+  // ── Species card — fixed 350px height, 40% text / 60% images ────────────────
   return (
-    <article className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden transition-shadow hover:shadow-md">
-      <div className="flex flex-col sm:flex-row">
+    <article className="bg-white rounded-2xl shadow-sm border border-stone-100 overflow-hidden transition-shadow hover:shadow-md h-[350px]">
+      <div className="flex h-full">
 
-        {/* Text column */}
-        <div className="flex flex-col flex-1 p-5 gap-2 min-w-0">
+        {/* Text column — 40% width */}
+        <div className="flex flex-col w-[40%] p-5 gap-2 min-w-0 border-r border-stone-100">
 
           <div className="flex items-baseline gap-2 flex-wrap">
             <h2 className="font-serif text-lg font-semibold text-stone-800 leading-snug">
@@ -158,26 +158,28 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
           </div>
         </div>
 
-        {/* Image gallery: equal width to text column, images fill all space side by side */}
-        <div className="flex flex-row self-stretch flex-1 border-t sm:border-t-0 sm:border-l border-stone-100">
+        {/* Image panel — 60% width, two equal cells side by side */}
+        <div className="flex w-[60%] h-full">
 
-          {/* Bird photo — object-contain so nothing is cropped */}
-          <div className="flex-1 min-h-[140px] sm:min-h-0 overflow-hidden bg-stone-100 flex items-center justify-center border-r border-stone-100">
+          {/* Bird photo — fills cell, cropped to fit (object-cover) */}
+          <div className="w-1/2 h-full overflow-hidden bg-stone-100 border-r border-stone-100">
             {loading ? (
-              <div className="w-full h-full animate-pulse bg-stone-100" />
+              <div className="w-full h-full animate-pulse bg-stone-200" />
             ) : data?.thumbnail?.source ? (
               <img
                 src={data.thumbnail.source}
                 alt={title}
-                className="w-full h-full object-contain"
+                className="w-full h-full object-cover"
               />
             ) : (
-              <span className="text-4xl select-none opacity-30">🐦</span>
+              <div className="w-full h-full flex items-center justify-center">
+                <span className="text-4xl select-none opacity-30">🐦</span>
+              </div>
             )}
           </div>
 
-          {/* Range map — same flex-1 cell as the photo */}
-          <div className="flex-1 min-h-[140px] sm:min-h-0">
+          {/* Range map — fills remaining half */}
+          <div className="w-1/2 h-full">
             <RangeMapImage rangeMap={rangeMap} title={title} />
           </div>
 

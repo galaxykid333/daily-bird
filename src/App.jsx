@@ -38,7 +38,7 @@ export default function App() {
     <div className="min-h-screen bg-stone-50 font-sans">
       {/* Header */}
       <header className="sticky top-0 z-40 bg-white/80 backdrop-blur border-b border-stone-100">
-        <div className="max-w-3xl mx-auto px-4 py-3 flex items-center justify-between">
+        <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-2xl select-none">🐦</span>
             <span className="font-serif text-xl font-semibold text-stone-800 tracking-tight">
@@ -61,7 +61,7 @@ export default function App() {
       </header>
 
       {/* Main */}
-      <main className="max-w-3xl mx-auto px-4 py-8">
+      <main className="max-w-5xl mx-auto px-4 py-8">
         {/* Date banner */}
         <p className="text-xs font-medium text-stone-400 uppercase tracking-widest mb-6">
           {new Date().toLocaleDateString('en-US', {
@@ -109,7 +109,7 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="max-w-3xl mx-auto px-4 py-8 text-center text-xs text-stone-400">
+      <footer className="max-w-5xl mx-auto px-4 py-8 text-center text-xs text-stone-400">
         Content sourced from{' '}
         <a
           href="https://en.wikipedia.org"
