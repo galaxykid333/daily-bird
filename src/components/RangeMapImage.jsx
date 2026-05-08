@@ -83,8 +83,19 @@ function buildSvg(countries) {
 
 // ---------------------------------------------------------------------------
 
+/** Small watermark label shown in the bottom-right corner of each map. */
+function Watermark({ label }) {
+  return (
+    <span className="absolute bottom-1.5 right-1.5 text-[9px] leading-none
+                     bg-black/25 text-white/90 px-1.5 py-0.5 rounded
+                     pointer-events-none select-none">
+      {label}
+    </span>
+  )
+}
+
 export function RangeMapImage({ rangeMap, title }) {
-  const { type, url, countries = [] } = rangeMap
+  const { type, url, countries = [], mapSource } = rangeMap
 
   const builtSvg = useMemo(
     () => (type === 'svg' ? buildSvg(countries) : null),
@@ -92,7 +103,7 @@ export function RangeMapImage({ rangeMap, title }) {
   )
 
   // The parent cell is flex-1 so this div must fill it completely in both axes
-  const base = 'w-full h-full overflow-hidden flex items-center justify-center bg-stone-100'
+  const base = 'relative w-full h-full overflow-hidden flex items-center justify-center bg-stone-100'
 
   // --- Wikipedia range map ---
   if (type === 'wiki' && url) {
@@ -104,6 +115,7 @@ export function RangeMapImage({ rangeMap, title }) {
           className="w-full h-full object-contain"
           loading="lazy"
         />
+        <Watermark label="from Wikimedia" />
       </div>
     )
   }
@@ -111,11 +123,14 @@ export function RangeMapImage({ rangeMap, title }) {
   // --- Auto-generated SVG with zoomed crop ---
   if (type === 'svg') {
     return (
-      <div
-        className={base}
-        aria-label={`Range map for ${title}`}
-        dangerouslySetInnerHTML={{ __html: builtSvg }}
-      />
+      <div className="relative w-full h-full">
+        <div
+          className={base}
+          aria-label={`Range map for ${title}`}
+          dangerouslySetInnerHTML={{ __html: builtSvg }}
+        />
+        {mapSource === 'claude' && <Watermark label="drawn with Claude" />}
+      </div>
     )
   }
 
