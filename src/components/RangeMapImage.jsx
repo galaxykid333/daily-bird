@@ -87,8 +87,8 @@ function buildSvg(countries) {
 function Watermark({ label }) {
   return (
     <span className="absolute bottom-1.5 right-1.5 text-[9px] leading-none
-                     bg-black/25 text-white/90 px-1.5 py-0.5 rounded
-                     pointer-events-none select-none">
+                     bg-black/30 text-white px-1.5 py-0.5 rounded
+                     pointer-events-none select-none z-10">
       {label}
     </span>
   )
@@ -123,7 +123,7 @@ export function RangeMapImage({ rangeMap, title }) {
   // --- Auto-generated SVG with zoomed crop ---
   if (type === 'svg') {
     return (
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full overflow-hidden">
         <div
           className={base}
           aria-label={`Range map for ${title}`}

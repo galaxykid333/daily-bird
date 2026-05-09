@@ -2,17 +2,7 @@ import { useWikiSummary } from '../hooks/useWikiSummary'
 import { useRangeMap } from '../hooks/useRangeMap'
 import { RangeMapImage } from './RangeMapImage'
 import ebirdMap from '../data/ebird.json'
-
-/**
- * Try to pull the binomial/Latin name from the opening sentence.
- * Wikipedia leads look like: "The Barn owl (Tyto alba) is a species of..."
- * We match the first "(CapWord lowerword)" near the start of the text.
- */
-function extractLatinName(extract) {
-  if (!extract) return null
-  const m = extract.slice(0, 300).match(/\(([A-Z][a-z]+(?: [a-z]+)+)\)/)
-  return m ? m[1] : null
-}
+import latinNames from '../data/latin-names.json'
 
 /**
  * Trim the extract to a target line-count by sentence.
@@ -32,7 +22,7 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
   const { data, loading, error } = useWikiSummary(title)
   const rangeMap = useRangeMap(title, type)
 
-  const latinName = extractLatinName(data?.extract)
+  const latinName = latinNames[title] ?? null
   const extract   = trimExtract(data?.extract)
 
   const wikiUrl =
