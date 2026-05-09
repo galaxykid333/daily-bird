@@ -123,9 +123,10 @@ export function RangeMapImage({ rangeMap, title }) {
   // --- Auto-generated SVG with zoomed crop ---
   if (type === 'svg') {
     return (
-      <div className="relative w-full h-full overflow-hidden">
+      <div className="relative w-full h-full bg-stone-100 overflow-hidden">
+        {/* SVG layer: absolute so it doesn't compete with Watermark in stacking */}
         <div
-          className={base}
+          className="absolute inset-0 flex items-center justify-center"
           aria-label={`Range map for ${title}`}
           dangerouslySetInnerHTML={{ __html: builtSvg }}
         />
