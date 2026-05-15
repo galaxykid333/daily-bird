@@ -88,14 +88,14 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
         {/* Text column — full width on mobile, 40% on desktop */}
         <div className="flex flex-col w-full sm:w-[40%] p-5 gap-2 min-w-0 border-b sm:border-b-0 sm:border-r border-stone-100">
 
-          <div className="flex items-baseline gap-2 flex-wrap">
+          <div className="flex flex-col gap-0.5">
             <h2 className="font-serif text-lg font-semibold text-stone-800 leading-snug">
               {loading
                 ? <span className="block h-6 bg-stone-100 rounded animate-pulse w-2/3" />
                 : data?.title ?? title}
             </h2>
             {!loading && latinName && (
-              <span className="text-sm text-stone-400 italic leading-snug shrink-0">
+              <span className="text-sm text-stone-400 italic leading-snug">
                 {latinName}
               </span>
             )}
