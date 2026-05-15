@@ -89,13 +89,11 @@ function FloatingPanel({ anchorEl, onMouseEnter, onMouseLeave, children }) {
   useEffect(() => {
     if (!anchorEl) return
     const rect = anchorEl.getBoundingClientRect()
-    const above = rect.top > 120
     setStyle({
       position: 'fixed',
       visibility: 'visible',
-      left: Math.min(rect.left + rect.width / 2, window.innerWidth - 220),
-      top: above ? rect.top - 8 : rect.bottom + 8,
-      transform: above ? 'translate(-50%, -100%)' : 'translate(-50%, 0)',
+      left: Math.min(rect.left, window.innerWidth - 216),
+      top: rect.bottom + 6,
       zIndex: 9999,
     })
   }, [anchorEl])
