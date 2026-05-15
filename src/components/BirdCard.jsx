@@ -1,6 +1,7 @@
 import { useWikiSummary } from '../hooks/useWikiSummary'
 import { useRangeMap } from '../hooks/useRangeMap'
 import { RangeMapImage } from './RangeMapImage'
+import { LatinName } from './LatinName'
 import ebirdMap from '../data/ebird.json'
 import latinNames from '../data/latin-names.json'
 
@@ -95,9 +96,7 @@ export function BirdCard({ title, type, isSaved, onToggleSave }) {
                 : data?.title ?? title}
             </h2>
             {!loading && latinName && (
-              <span className="text-sm text-stone-400 italic leading-snug">
-                {latinName}
-              </span>
+              <LatinName title={title} latinName={latinName} />
             )}
           </div>
 
